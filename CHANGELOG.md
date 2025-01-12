@@ -5,3 +5,7 @@
 - MIFARE Classic support
 - Hardware SPI communication
 - GPIO control
+
+## 0.0.2
+
+- Updated dependency dart_periphery to `dart_periphery: ^0.9.13`
