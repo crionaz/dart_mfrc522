@@ -11,7 +11,7 @@ dependencies:
   flutter:
     sdk: flutter
   plugin_platform_interface: ^2.0.2
-  dart_periphery: ^0.9.13
+  dart_periphery: ^0.9.5
   flutter_gpiod: ^0.5.1+5
   logger: ^1.3.0
 
