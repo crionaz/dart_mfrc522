@@ -1,14 +1,11 @@
-import 'mfrc522_platform_interface.dart';
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:dart_periphery/dart_periphery.dart';
 import 'package:logger/logger.dart';
 import 'package:flutter_gpiod/flutter_gpiod.dart';
+export 'simple_mfrc522.dart';
 
 class Mfrc522 {
-  Future<String?> getPlatformVersion() {
-    return Mfrc522Platform.instance.getPlatformVersion();
-  }
 
   static const int maxLen = 16;
 

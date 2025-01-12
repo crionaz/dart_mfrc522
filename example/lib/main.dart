@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'dart:async';
 
-import 'package:flutter/services.dart';
 import 'package:mfrc522/mfrc522.dart';
+import 'package:mfrc522/simple_mfrc522.dart';
 
 void main() {
   runApp(const MyApp());
@@ -16,46 +16,52 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  String _platformVersion = 'Unknown';
-  final _mfrc522Plugin = Mfrc522();
+  final rfid = SimpleMfrc522();
+  String cardId = 'No card detected';
 
   @override
   void initState() {
     super.initState();
-    initPlatformState();
   }
 
-  // Platform messages are asynchronous, so we initialize in an async method.
-  Future<void> initPlatformState() async {
-    String platformVersion;
-    // Platform messages may fail, so we use a try/catch PlatformException.
-    // We also handle the message potentially returning null.
+
+  Future<String> read() async {
     try {
-      platformVersion =
-          await _mfrc522Plugin.getPlatformVersion() ?? 'Unknown platform version';
-    } on PlatformException {
-      platformVersion = 'Failed to get platform version.';
+      var result = await rfid.read();
+      if (result['id'] != null) {
+        setState(() {
+          cardId = 'Card ID: ${result['id']}';
+        });
+        return 'Card ID: ${result['id']}';
+      }
+    } finally {
+    rfid.mfrc522.dispose();
     }
-
-    // If the widget was removed from the tree while the asynchronous platform
-    // message was in flight, we want to discard the reply rather than calling
-    // setState to update our non-existent appearance.
-    if (!mounted) return;
-
-    setState(() {
-      _platformVersion = platformVersion;
-    });
+    return 'No card detected';
   }
+
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       home: Scaffold(
         appBar: AppBar(
-          title: const Text('Plugin example app'),
+          title: const Text('RFID Reader'),
         ),
         body: Center(
-          child: Text('Running on: $_platformVersion\n'),
+          child: ElevatedButton(
+            onPressed: ()  {
+              read();
+            },
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                const Text('Click to read card'),
+                Text("Detected card: $cardId"),
+              ],
+            ),
+
+          ),
         ),
       ),
     );
