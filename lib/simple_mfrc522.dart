@@ -1,4 +1,4 @@
-import 'mfrc522.dart';
+import 'package:mfrc522/mfrc522.dart';
 
 class SimpleMfrc522 {
   final Mfrc522 mfrc522;
