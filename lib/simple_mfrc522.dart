@@ -44,25 +44,25 @@ class SimpleMfrc522 {
       }
 
       var blockAddr = [trailerBlock - 3, trailerBlock - 2, trailerBlock - 1];
-      var result = await mfrc522.request(Mfrc522.PICC_REQIDL);
-      if (result['status'] != Mfrc522.MI_OK) {
+      var result = await mfrc522.request(Mfrc522.piccReqIdl);
+      if (result['status'] != Mfrc522.miOk) {
         return {'id': null, 'text': null};
       }
 
       result = await mfrc522.anticoll();
-      if (result['status'] != Mfrc522.MI_OK) {
+      if (result['status'] != Mfrc522.miOk) {
         return {'id': null, 'text': null};
       }
 
       var id = _uidToNum(result['uid']);
       await mfrc522.selectTag(result['uid']);
       var status = await mfrc522.authenticate(
-          Mfrc522.PICC_AUTHENT1A, trailerBlock, key, result['uid']);
+          Mfrc522.piccAuthent1A, trailerBlock, key, result['uid']);
 
       var data = <int>[];
       var textRead = '';
 
-      if (status == Mfrc522.MI_OK) {
+      if (status == Mfrc522.miOk) {
         for (var blockNum in blockAddr) {
           var block = await mfrc522.readTag(blockNum);
           if (block != null) {
@@ -82,12 +82,12 @@ class SimpleMfrc522 {
   }
 
   Future<int?> _readIdNoBlock() async {
-    var result = await mfrc522.request(Mfrc522.PICC_REQIDL);
-    if (result['status'] != Mfrc522.MI_OK) {
+    var result = await mfrc522.request(Mfrc522.piccReqIdl);
+    if (result['status'] != Mfrc522.miOk) {
       return null;
     }
     result = await mfrc522.anticoll();
-    if (result['status'] != Mfrc522.MI_OK) {
+    if (result['status'] != Mfrc522.miOk) {
       return null;
     }
     return _uidToNum(result['uid']);
@@ -101,13 +101,13 @@ class SimpleMfrc522 {
       }
 
       var blockAddr = [trailerBlock - 3, trailerBlock - 2, trailerBlock - 1];
-      var reqRes = await mfrc522.request(Mfrc522.PICC_REQIDL);
-      if (reqRes['status'] != Mfrc522.MI_OK) {
+      var reqRes = await mfrc522.request(Mfrc522.piccReqIdl);
+      if (reqRes['status'] != Mfrc522.miOk) {
         return {'id': null, 'text': null};
       }
 
       var collRes = await mfrc522.anticoll();
-      if (collRes['status'] != Mfrc522.MI_OK) {
+      if (collRes['status'] != Mfrc522.miOk) {
         return {'id': null, 'text': null};
       }
 
@@ -118,8 +118,8 @@ class SimpleMfrc522 {
       }
 
       var auth = await mfrc522.authenticate(
-          Mfrc522.PICC_AUTHENT1A, trailerBlock, key, collRes['uid']);
-      if (auth != Mfrc522.MI_OK) {
+          Mfrc522.piccAuthent1A, trailerBlock, key, collRes['uid']);
+      if (auth != Mfrc522.miOk) {
         mfrc522.stopCrypto1();
         return {'id': null, 'text': null};
       }

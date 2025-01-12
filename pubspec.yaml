@@ -1,7 +1,7 @@
 name: mfrc522
 description: "A Dart library for interfacing with MFRC522 RFID readers on Linux/Raspberry Pi."
 version: 0.0.1
-homepage:
+homepage: https://github.com/crionaz/dart_mfrc522
 
 environment:
   sdk: ^3.6.0
